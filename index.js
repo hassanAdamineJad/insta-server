@@ -31,8 +31,8 @@ const upload = multer({ storage: storage });
 // create datbase connection
 const dbConn = mysql.createConnection({
   host: process.env.DB_HOST || "",
-  user: process.env.DB_USER_NAME || "",
-  password: process.env.DB_USER_PASSWORD || "",
+  user: process.env.DB_NAME || "",
+  password: process.env.DB_PASS || "",
   database: process.env.DB_NAME || "",
   port: process.env.DB_PORT || "",
 });
@@ -40,11 +40,14 @@ const dbConn = mysql.createConnection({
 dbConn.connect(function (err) {
   if (err) {
     console.log(err);
-    throw err;
   }
   console.log("Database was connected");
   require("./routes")({ app, dbConn, upload });
   app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
   });
+});
+
+app.get("/", (req, res) => {
+  res.send({ message: `Hello Hassan` });
 });
